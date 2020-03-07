@@ -1,0 +1,10 @@
+"0","read.fasta(file = system.file(""/Users/hayyen/Desktop/Yanglu_twitter/gene/GWHABKS00000000.genome.fasta"", package = ""seqinr""), 
+  seqtype = c(""DNA"", ""AA""), as.string = FALSE, forceDNAtolower = TRUE,
+  set.attributes = TRUE, legacy.mode = TRUE, seqonly = FALSE, strip.desc = FALSE,
+  whole.header = FALSE,
+  bfa = FALSE, sizeof.longlong = .Machine$sizeof.longlong,
+  endian = .Platform$endian, apply.mask = TRUE)
+"
+"2","Error in read.fasta(file = system.file(""/Users/hayyen/Desktop/Yanglu_twitter/gene/GWHABKS00000000.genome.fasta"",  : 
+  could not find function ""read.fasta""
+"

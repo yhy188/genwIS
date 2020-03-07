@@ -1,0 +1,9 @@
+"0"," library(devtools)
+"
+"2","Loading required package: usethis
+"
+"0","#install_github(""sdray/ade4"")"
+"0"," library(""seqinr"")"
+"2","Error: package or namespace load failed for ‘seqinr’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘ade4’
+"

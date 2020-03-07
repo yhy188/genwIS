@@ -1,0 +1,110 @@
+---
+title: "genwIS"
+author: "haiyan yu"
+date: "2/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("GWASTools")
+#https://bioconductor.org/packages/release/bioc/html/GWASTools.html
+#http://bio3.giga.ulg.ac.be/index.php/software/ipcaps/
+ install.packages("IPCAPS",dependencies=TRUE)
+ #episcan: Scan Pairwise Epistasis
+ #https://cran.r-project.org/web/packages/episcan/vignettes/episcan.html
+ install.packages(episcan)
+ 
+ library(devtools)
+#install_github("sdray/ade4")
+ library("seqinr")
+ # load package
+library(episcan)
+```
+
+```{r}
+read.fasta(file = system.file("/Users/hayyen/Desktop/Yanglu_twitter/gene/GWHABKS00000000.genome.fasta", package = "seqinr"), 
+  seqtype = c("DNA", "AA"), as.string = FALSE, forceDNAtolower = TRUE,
+  set.attributes = TRUE, legacy.mode = TRUE, seqonly = FALSE, strip.desc = FALSE,
+  whole.header = FALSE,
+  bfa = FALSE, sizeof.longlong = .Machine$sizeof.longlong,
+  endian = .Platform$endian, apply.mask = TRUE)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+#https://cran.r-project.org/web/packages/episcan/vignettes/episcan.html
+set.seed(321)
+geno <- matrix(sample(0:2, size = 10000, 
+                      replace = TRUE, prob = c(0.5, 0.3, 0.2)), ncol = 100)
+dimnames(geno) <- list(row = paste0("IND", 1:nrow(geno)), 
+                       col = paste0("rs", 1:ncol(geno)))
+p <- c(rep(0, 60), rep(1, 40))
+geno[1:5, 1:8]
+
+
+```
+
+```{r}
+episcan(geno1 = geno, 
+        pheno = p, 
+        phetype = "case-control",
+        outfile = "episcan_1geno_cc", 
+        suffix = ".txt", 
+        zpthres = 0.9, 
+        chunksize = 20, 
+        scale = TRUE)
+
+result <- read.table("episcan_1geno_cc.txt",
+                     header = TRUE,
+                     stringsAsFactors = FALSE)
+head(result)
+```
+
+
+```{r}
+# simulate data
+geno1 <- matrix(sample(0:2, size = 10000, 
+                       replace = TRUE, prob = c(0.5, 0.3, 0.2)), ncol = 100)
+geno2 <- matrix(sample(0:2, size = 20000, 
+                       replace = TRUE, prob = c(0.4, 0.3, 0.3)), ncol = 200)
+dimnames(geno1) <- list(row = paste0("IND", 1:nrow(geno1)), 
+                        col = paste0("rs", 1:ncol(geno1)))
+dimnames(geno2) <- list(row = paste0("IND", 1:nrow(geno2)), 
+                        col = paste0("exm", 1:ncol(geno2)))
+p <- rnorm(100)
+
+# scan epistasis
+episcan(geno1 = geno1,
+        geno2 = geno2,
+        pheno = p, 
+        phetype = "quantitative",
+        outfile = "episcan_2geno_quant", 
+        suffix = ".txt", 
+        zpthres = 0.6, 
+        chunksize = 50, 
+        scale = TRUE)
+
+```

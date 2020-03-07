@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in read.fasta(file = system.file(\"/Users/hayyen/Desktop/Yanglu_twitter/gene/GWHABKS00000000.genome.fasta\",  : \n  could not find function \"read.fasta\"\n"}
